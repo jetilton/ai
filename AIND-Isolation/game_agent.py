@@ -2,6 +2,7 @@
 test your agent's strength against a set of known agents using tournament.py
 and include the results in your report.
 """
+#156258
 import random
 
 
@@ -38,15 +39,8 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - opp_moves)
+    opponent = game.get_opponent(player)
+    return float(len(game.get_legal_moves()) - len(game.get_legal_moves(player = opponent)))
 
 
 def custom_score_2(game, player):
@@ -72,15 +66,8 @@ def custom_score_2(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - opp_moves)
+    opponent = game.get_opponent(player)
+    return float(len(game.get_legal_moves()) / len(game.get_legal_moves(player = opponent)))
 
 
 def custom_score_3(game, player):
@@ -106,15 +93,8 @@ def custom_score_3(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - opp_moves)
+    opponent = game.get_opponent(player)
+    return float(len(game.get_legal_moves()) - len(game.get_legal_moves(player = opponent))/(len(game.get_legal_moves()) +len(game.get_legal_moves(player = opponent))))
 
 
 class IsolationPlayer:
@@ -436,8 +416,7 @@ class AlphaBetaPlayer(IsolationPlayer):
         best_move = ()
         for m in game.get_legal_moves():
             v = max(v, self.min_value(game.forecast_move(m), depth -1, alpha, beta))
-            if v >= best_score: best_score,best_move = v,m
+            if v > best_score: best_score,best_move = v,m
             if v >= beta:return best_move 
-
             alpha = max(alpha, v)
         return best_move
